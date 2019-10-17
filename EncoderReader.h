@@ -1,7 +1,6 @@
 void testFun();
 
-#ifdef __ENCODER_READER__
-#else
+#ifndef __ENCODER_READER__
 #define __ENCODER_READER__
 
 class EncoderReader
