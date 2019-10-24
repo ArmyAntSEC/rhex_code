@@ -3,6 +3,8 @@ void testFun();
 #ifndef __ENCODER_READER__
 #define __ENCODER_READER__
 
+#include <FixedPointsCommon.h>
+
 class EncoderReader
 {
 private:
@@ -10,10 +12,12 @@ private:
 	int lastValueTwo;
 	long lastMotorPositionStep;
 	int transitionsMatrix[2][2][2][2];
+	const int stepsPerRevolution = 48*75;
 public:
 	EncoderReader();
 	void step( int valueOne, int valueTwo );
-	long getLastMotorPositionStep();
+	long getLastMotorPositionSteps();
+	SQ15x16 getLastMotorPositionRevs();
 	int getLastValueOne();
 	int getLastValueTwo();
 };

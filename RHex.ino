@@ -1,5 +1,9 @@
 #include "Arduino.h"
 #include "EncoderReader.h"
+#include "MotorRegulator.h"
+#include "MotorDriver.h"
+
+#include <FixedPointsCommon.h>
 
 int driverPinOne = 3;
 int driverPinTwo = 5;
@@ -9,55 +13,75 @@ int encoderPinTwo = 4;
 
 int lastLevelOne = 0;
 long numberOfClicks = 0;
-unsigned long millisBetweenWrite = 100;
+unsigned long millisBetweenWrite = 1000;
 unsigned long millisForLastWrite = 0;
+
+unsigned long millisBetweenUpdate = 10;
+unsigned long millisForLastUpdate = 0;
+
 
 long loopIterationCount = 0;
 
 EncoderReader encoderReader;
+MotorRegulator motorRegulator;
+MotorDriver motorDriver( driverPinOne, driverPinTwo );
 
 void setup() {
-  //Driver pins
-  pinMode(driverPinOne, OUTPUT);
-  pinMode(driverPinTwo, OUTPUT);
-  digitalWrite(driverPinOne, 0); //Set to 1 to ground one input
-  analogWrite(driverPinTwo, 128); //Set to 0-255 to select speed.
+	//Driver pins
+	pinMode(driverPinOne, OUTPUT);
+	pinMode(driverPinTwo, OUTPUT);
+	analogWrite(driverPinOne, 0); //Set to 0-255 to select speed.
+	analogWrite(driverPinTwo, 0); //Set to 0-255 to select speed.
 
-  //Encoder pins
-  pinMode( encoderPinOne, INPUT );
-  pinMode( encoderPinTwo, INPUT );
+	//Encoder pins
+	pinMode( encoderPinOne, INPUT );
+	pinMode( encoderPinTwo, INPUT );
 
-  Serial.begin(9600);
-  Serial.println("Hello World again!");
+	//Initialize the regulator.
+	motorRegulator.setWantedPositionRevs( -0.8 );
+
+	//Initilaize the communication.
+	Serial.begin(9600);
+	Serial.println("Hello World again!");
+
+	int temp = 10;
+	SQ15x16 temp2 = temp;
+	Serial.print( temp2.getInteger(), DEC );
+
+
 }
 
+SQ15x16 motorPositionRevs;
+SQ15x16 motorPWM;
+
 void loop() {
-  //Read the encoder value and count the transitions.
-  int encoderValueOne = digitalRead( encoderPinOne );
-  int encoderValueTwo = digitalRead( encoderPinTwo );
-  if (encoderValueOne != lastLevelOne )
-  {
-    lastLevelOne = encoderValueOne;
-    numberOfClicks++;
-  }
 
-  encoderReader.step( encoderValueOne, encoderValueTwo );
 
-  //Count the speed at which the loop gets called.
-  loopIterationCount++;
+	//We update the encoder value on each iteration
+	int encoderValueOne = digitalRead( encoderPinOne );
+	int encoderValueTwo = digitalRead( encoderPinTwo );
+	encoderReader.step( encoderValueOne, encoderValueTwo );
 
-  //Once per second, write some stats to serial.
-  if ( millis() >= millisForLastWrite + millisBetweenWrite ) {
-    millisForLastWrite = millis();
+	//100 times per second, update the PWM values
+	if ( millis() >= millisForLastUpdate + millisBetweenUpdate ) {
+		millisForLastUpdate += millisBetweenUpdate;
 
-    Serial.print ( "Motor Position (1/10 shaft revs): ");
-    Serial.println ( encoderReader.getLastMotorPositionStep()/48/7.483 );
+		motorPositionRevs = encoderReader.getLastMotorPositionRevs();
+		motorPWM = motorRegulator.getPWMValue(motorPositionRevs);
 
-  }
+		motorDriver.setMotorPWM( motorPWM.getInteger() );
 
-  if ( loopIterationCount > 1000000/4 ) {
-    digitalWrite(driverPinOne, 0); //Set both to 0 to stop motor.
-    analogWrite(driverPinTwo, 0);
-  }
+	}
 
+	//Once per second, write some stats to serial.
+	if ( millis() >= millisForLastWrite + millisBetweenWrite ) {
+		millisForLastWrite += millisBetweenWrite;
+
+		Serial.print ( "Motor Position: ");
+		Serial.print ( (float)motorPositionRevs, DEC );
+		Serial.println ( " [revs]" );
+
+		Serial.print ( "Motor PWM: " );
+		Serial.println ( (float)motorPWM, DEC );
+	}
 }

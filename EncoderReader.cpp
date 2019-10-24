@@ -26,14 +26,21 @@ void EncoderReader::step( int valueOne, int valueTwo )
 		this->lastValueOne = valueOne;
 		this->lastValueTwo = valueTwo;
 
-		this->lastMotorPositionStep = this->lastMotorPositionStep + stepDir;
+		this->lastMotorPositionStep = (this->lastMotorPositionStep + stepDir) % this->stepsPerRevolution;
+
 	}
 }
 
 
-long EncoderReader::getLastMotorPositionStep()
+long EncoderReader::getLastMotorPositionSteps()
 {
 	return this->lastMotorPositionStep;
+}
+
+SQ15x16 EncoderReader::getLastMotorPositionRevs()
+{
+	SQ15x16 lastPosStep = this->lastMotorPositionStep;
+	return lastPosStep / this->stepsPerRevolution;
 }
 
 
