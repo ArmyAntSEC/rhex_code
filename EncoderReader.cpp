@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "EncoderReader.h"
 
-EncoderReader::EncoderReader()
+EncoderReader::EncoderReader( int encoderPinOne, int encoderPinTwo )
 {
 	this->lastValueOne = 0;
 	this->lastValueTwo = 0;
@@ -15,11 +15,23 @@ EncoderReader::EncoderReader()
 	this->transitionsMatrix[1][0][0][0] = -1;
 	this->transitionsMatrix[0][0][0][1] = -1;
 	this->transitionsMatrix[0][1][1][1] = -1;
+
+	this->encoderPinOne = encoderPinOne;
+	this->encoderPinTwo = encoderPinTwo;
 }
 
 
-void EncoderReader::step( int valueOne, int valueTwo )
+void EncoderReader::initPins()
 {
+	pinMode( this->encoderPinOne, INPUT );
+	pinMode( this->encoderPinTwo, INPUT );
+}
+
+void EncoderReader::step()
+{
+	int valueOne = digitalRead( encoderPinOne );
+	int valueTwo = digitalRead( encoderPinTwo );
+
 	if ( valueOne != this->lastValueOne || valueTwo != this->lastValueTwo ) {
 		int stepDir = this->transitionsMatrix[this->lastValueOne][this->lastValueTwo][valueOne][valueTwo];
 

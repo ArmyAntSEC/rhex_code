@@ -13,9 +13,13 @@ private:
 	long lastMotorPositionStep;
 	int transitionsMatrix[2][2][2][2];
 	const int stepsPerRevolution = 48*75;
+
+	int encoderPinOne;
+	int encoderPinTwo;
 public:
-	EncoderReader();
-	void step( int valueOne, int valueTwo );
+	EncoderReader( int encoderPinOne, int encoderPinTwo );
+	void initPins();
+	void step();
 	long getLastMotorPositionSteps();
 	SQ15x16 getLastMotorPositionRevs();
 	int getLastValueOne();

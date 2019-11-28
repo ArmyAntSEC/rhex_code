@@ -14,6 +14,12 @@ MotorDriver::MotorDriver(int driverPinOne, int driverPinTwo )
 	this->driverPinTwo = driverPinTwo;
 }
 
+void MotorDriver::initPins() {
+	pinMode(this->driverPinOne, OUTPUT);
+	pinMode(this->driverPinTwo, OUTPUT);
+	this->setMotorPWM(0);
+}
+
 void MotorDriver::setMotorPWM( int motorPWM )
 {
 	//Stop drivers if power is slow.

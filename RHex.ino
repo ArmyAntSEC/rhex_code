@@ -11,65 +11,74 @@ int driverPinTwo = 5;
 int encoderPinOne = 2;
 int encoderPinTwo = 4;
 
+int posPWMOutputPin =  10;
+int rotationCounterInputPin =  13;
+
 int lastLevelOne = 0;
 long numberOfClicks = 0;
 unsigned long millisBetweenWrite = 1000;
 unsigned long millisForLastWrite = 0;
 
-unsigned long millisBetweenUpdate = 10;
-unsigned long millisForLastUpdate = 0;
+unsigned long microsBetweenUpdate = 1000;
+unsigned long microsForLastUpdate = 0;
 
 
 long loopIterationCount = 0;
 
-EncoderReader encoderReader;
+SQ15x16 motorPositionRevs;
+SQ15x16 motorPWM;
+
+EncoderReader encoderReader( encoderPinOne, encoderPinTwo );
 MotorRegulator motorRegulator;
 MotorDriver motorDriver( driverPinOne, driverPinTwo );
 
-void setup() {
-	//Driver pins
-	pinMode(driverPinOne, OUTPUT);
-	pinMode(driverPinTwo, OUTPUT);
-	analogWrite(driverPinOne, 0); //Set to 0-255 to select speed.
-	analogWrite(driverPinTwo, 0); //Set to 0-255 to select speed.
+int lastRotationCounterLevel = 0;
+SQ15x16 wantedPosRevs = -0.5;
 
-	//Encoder pins
-	pinMode( encoderPinOne, INPUT );
-	pinMode( encoderPinTwo, INPUT );
+void setup() {
+	motorDriver.initPins();
+	encoderReader.initPins();
+
+	pinMode(posPWMOutputPin, OUTPUT);
+	pinMode(rotationCounterInputPin, INPUT);
 
 	//Initialize the regulator.
-	motorRegulator.setWantedPositionRevs( -0.8 );
+	motorRegulator.setWantedPositionRevs( wantedPosRevs );
 
 	//Initilaize the communication.
 	Serial.begin(9600);
 	Serial.println("Hello World again!");
 
-	int temp = 10;
-	SQ15x16 temp2 = temp;
-	Serial.print( temp2.getInteger(), DEC );
-
-
 }
 
-SQ15x16 motorPositionRevs;
-SQ15x16 motorPWM;
 
 void loop() {
+	loopIterationCount++;
 
+	/*
+	motorDriver.setMotorPWM( 64 );
+	int newRotationCounterLevel = digitalRead( rotationCounterInputPin  );
+	if ( newRotationCounterLevel != lastRotationCounterLevel ) {
+		Serial.println ("LAP!" );
+		lastRotationCounterLevel = newRotationCounterLevel;
+	}
+	*/
 
 	//We update the encoder value on each iteration
-	int encoderValueOne = digitalRead( encoderPinOne );
-	int encoderValueTwo = digitalRead( encoderPinTwo );
-	encoderReader.step( encoderValueOne, encoderValueTwo );
+	encoderReader.step();
+	motorPositionRevs = encoderReader.getLastMotorPositionRevs();
+	int motorPosPWM = ((motorPositionRevs * 256).getInteger() % 256 + 256) % 256;
+
 
 	//100 times per second, update the PWM values
-	if ( millis() >= millisForLastUpdate + millisBetweenUpdate ) {
-		millisForLastUpdate += millisBetweenUpdate;
+	if ( micros() >= microsForLastUpdate + microsBetweenUpdate ) {
+		microsForLastUpdate += microsBetweenUpdate;
 
 		motorPositionRevs = encoderReader.getLastMotorPositionRevs();
 		motorPWM = motorRegulator.getPWMValue(motorPositionRevs);
 
 		motorDriver.setMotorPWM( motorPWM.getInteger() );
+
 
 	}
 
@@ -77,11 +86,25 @@ void loop() {
 	if ( millis() >= millisForLastWrite + millisBetweenWrite ) {
 		millisForLastWrite += millisBetweenWrite;
 
+		Serial.print ( "Wanted pos: ");
+		Serial.print ( (float)wantedPosRevs, DEC );
+		Serial.println ( " [revs]" );
+
 		Serial.print ( "Motor Position: ");
 		Serial.print ( (float)motorPositionRevs, DEC );
 		Serial.println ( " [revs]" );
 
 		Serial.print ( "Motor PWM: " );
 		Serial.println ( (float)motorPWM, DEC );
+
+		//analogWrite(posPWMOutputPin, motorPosPWM);
+
+		//Serial.print ( "Pos PWM: " );
+		//Serial.println ( motorPosPWM, DEC );
+
+		Serial.print ( "Loops/s: " );
+		Serial.println ( loopIterationCount/(millis()/1000), DEC );
+
 	}
+
 }
