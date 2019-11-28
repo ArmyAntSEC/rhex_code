@@ -20,7 +20,7 @@ SQ15x16 MotorRegulator::getPWMValue( SQ15x16 currentPositionRevs )
 		this->lastDelta  = this->lastDelta - 1;
 	}
 	SQ15x16 pwmValue = this->P * this->lastDelta + this->D * (delta - this->lastDelta);
-    pwmValue = max(min(pwmValue,255),-255);
+    pwmValue = max(min(pwmValue,64),-64);
 
     this->lastDelta = delta;
 
