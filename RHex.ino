@@ -1,3 +1,5 @@
+//TODO: Use the Encoder library to read the rotary encoder: https://www.pjrc.com/teensy/td_libs_Encoder.html
+
 #include "Arduino.h"
 #include "EncoderReader.h"
 #include "MotorRegulator.h"
