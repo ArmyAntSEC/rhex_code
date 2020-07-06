@@ -1,5 +1,6 @@
 //TODO: Use the Encoder library to read the rotary encoder: https://www.pjrc.com/teensy/td_libs_Encoder.html
 //TODO: Use PID library here: https://github.com/br3ttb/Arduino-PID-Library/
+//TODO: Use Task scheduler here: http://bleaklow.com/2010/07/20/a_very_simple_arduino_task_manager.html
 
 #include "Arduino.h"
 #include "EncoderReader.h"
