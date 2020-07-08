@@ -42,9 +42,24 @@
 			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/arduino/hardware/avr/1.6.23/variants/standard</locationURI>
 		</link>
 		<link>
+			<name>libraries/Encoder</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Encoder/0.1</locationURI>
+		</link>
+		<link>
 			<name>libraries/FixedPoints</name>
 			<type>2</type>
 			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/FixedPoints/1.0.7</locationURI>
+		</link>
+		<link>
+			<name>libraries/Scheduler</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Scheduler/0.4.4</locationURI>
+		</link>
+		<link>
+			<name>libraries/TaskScheduler</name>
+			<type>2</type>
+			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/TaskScheduler/3.0.2</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
