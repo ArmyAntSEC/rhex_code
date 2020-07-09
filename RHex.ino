@@ -1,5 +1,4 @@
 //Dependency: https://github.com/PaulStoffregen/Encoder/commit/4c4ec3ad970651324e0c197b179a682e9604ab08
-//Dependency: https://github.com/br3ttb/Arduino-PID-Library/commit/9b4ca0e5b6d7bab9c6ac023e249d6af2446d99bb
 
 #include "Arduino.h"
 #include <Encoder.h>
