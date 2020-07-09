@@ -4,7 +4,7 @@
  *  Created on: 24 okt. 2019
  *      Author: Daniel
  */
-#include "Arduino.h"
+#include <Arduino.h>
 #include "MotorDriver.h"
 
 
@@ -14,7 +14,7 @@ MotorDriver::MotorDriver(int driverPinOne, int driverPinTwo )
 	this->driverPinTwo = driverPinTwo;
 }
 
-void MotorDriver::initPins() {
+void MotorDriver::init() {
 	pinMode(this->driverPinOne, OUTPUT);
 	pinMode(this->driverPinTwo, OUTPUT);
 	this->setMotorPWM(0);

@@ -42,11 +42,6 @@
 			<locationURI>ECLIPSE_HOME/arduinoPlugin/packages/arduino/hardware/avr/1.6.23/variants/standard</locationURI>
 		</link>
 		<link>
-			<name>libraries/Arduino-PID</name>
-			<type>2</type>
-			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Arduino-PID/0.1</locationURI>
-		</link>
-		<link>
 			<name>libraries/Encoder</name>
 			<type>2</type>
 			<locationURI>ECLIPSE_HOME/arduinoPlugin/libraries/Encoder/0.1</locationURI>

@@ -15,7 +15,7 @@ private:
 
 public:
 	MotorDriver ( int driverPinOne, int driverPinTwo );
-	void initPins();
+	void init();
 	void setMotorPWM( int motorPWM );
 };
 
