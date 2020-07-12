@@ -9,10 +9,11 @@
 #include <Arduino.h>
 
 SerialEchoBeacon::SerialEchoBeacon(unsigned long int _rate)
-: TimedTask(millis()), rate(_rate)
+: RecurringTask(_rate)
 {}
 
-void SerialEchoBeacon::run(unsigned long int ) {
+void SerialEchoBeacon::run(unsigned long int now) {
+	RecurringTask::run(now);
 	Serial.println("Beacon ping...");
-	incRunTime(rate);
+
 }

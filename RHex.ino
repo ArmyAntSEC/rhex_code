@@ -6,10 +6,20 @@
 #include "PID.h"
 #include "SerialEchoBeacon.h"
 #include "TaskScheduler.h"
+#include "MotorScheduler.h"
+#include "MotorController.h"
+
+#define ENCODER_PIN_1 0
+#define ENCODER_PIN_2 0
+#define DRIVER_PIN_1 0
+#define DRIVER_PIN_2 0
 
 SerialEchoBeacon beacon(1000);
-const int NUM_TASKS = 1;
-TaskScheduler::Task *tasks[NUM_TASKS] = { &beacon };
+MotorController controller( 1, ENCODER_PIN_1, ENCODER_PIN_2, DRIVER_PIN_1, DRIVER_PIN_2 );
+MotorScheduler scheduler( 100, &controller );
+
+const int NUM_TASKS = 3;
+TaskScheduler::Task *tasks[NUM_TASKS] = { &beacon, &controller, &scheduler };
 TaskScheduler::TaskScheduler sched(tasks, NUM_TASKS);
 
 void setup() {

@@ -8,22 +8,35 @@
 #ifndef MOTORSCHEDULER_H_
 #define MOTORSCHEDULER_H_
 
-#include <FixedPointsCommon.h>
+#include "RecurringTask.h"
+#include "MotorController.h"
 
-class MotorScheduler {
+class MotorScheduler : public TaskScheduler::RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
 private:
-	SQ15x16 currentSpeedRevsPerSecond;
-	SQ15x16 lastWantedPos;
-	SQ15x16 lastStepPhase;
-	long lastTimestampMicros;
+    const double cycleTimeSeconds;
+    const double slowTime;
+    const double slowPhase;
+    const double angleOffset;
 
-	SQ15x16 convertPhaseToPosRevs( SQ15x16 phase );
+    double slowTimeDelta;
+    double angleOffsetDelta;
 
+    double wantedShaftPosRev;
+    MotorController * const controller;
+
+    double interp1( int xlen, double x[], double y[], double xq );
 public:
-	MotorScheduler();
-	void setSpeed( SQ15x16 wantedSpeedRevsPerSecond );
-	SQ15x16 step( long microsSinceStart );
+	MotorScheduler(unsigned long int _rate, MotorController * const _controller );
 
+	virtual void run(unsigned long int now);
+
+	void setAngleOffsetDelta(double angleOffsetDelta) {
+		this->angleOffsetDelta = angleOffsetDelta;
+	}
+
+	void setSlowTimeDelta(double slowTimeDelta) {
+		this->slowTimeDelta = slowTimeDelta;
+	}
 };
 
 #endif /* MOTORSCHEDULER_H_ */
