@@ -12,9 +12,10 @@ class MotorDriver {
 private:
 	int driverPinOne;
 	int driverPinTwo;
+	int driverPinPWM;
 
 public:
-	MotorDriver ( int driverPinOne, int driverPinTwo );
+	MotorDriver ( int _driverPinOne, int _driverPinTwo, int _driverPinPWM );
 	void init();
 	void setMotorPWM( int motorPWM );
 };

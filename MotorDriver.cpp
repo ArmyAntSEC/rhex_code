@@ -8,11 +8,9 @@
 #include "MotorDriver.h"
 
 
-MotorDriver::MotorDriver(int driverPinOne, int driverPinTwo )
-{
-	this->driverPinOne = driverPinOne;
-	this->driverPinTwo = driverPinTwo;
-}
+MotorDriver::MotorDriver(int _driverPinOne, int _driverPinTwo, int _driverPinPWM ):
+driverPinOne(_driverPinOne), driverPinTwo(_driverPinTwo), driverPinPWM(_driverPinPWM)
+{}
 
 void MotorDriver::init() {
 	pinMode(this->driverPinOne, OUTPUT);
@@ -28,10 +26,12 @@ void MotorDriver::setMotorPWM( int motorPWM )
 	}
 
 	if ( motorPWM <= 0 ) {
-		analogWrite(this->driverPinTwo, 0);
-		analogWrite(this->driverPinOne, abs(motorPWM) );
+		digitalWrite ( this->driverPinTwo, LOW);
+		digitalWrite ( this->driverPinOne, HIGH);
+		analogWrite ( this->driverPinPWM, abs(motorPWM) );
 	} else {
-		analogWrite(this->driverPinTwo, abs(motorPWM) );
-		analogWrite(this->driverPinOne, 0);
+		digitalWrite ( this->driverPinTwo, HIGH);
+		digitalWrite ( this->driverPinOne, LOW);
+		analogWrite ( this->driverPinPWM, abs(motorPWM) );
 	}
 }

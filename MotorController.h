@@ -17,7 +17,7 @@
 class MotorController: public TaskScheduler::RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
 public:
 	MotorController(unsigned int _rate, unsigned int encoderPin1, unsigned int encoderPin2, //
-			unsigned int driverPin1, unsigned int driverPin2 );
+			unsigned int driverPin1, unsigned int driverPin2, unsigned int driverpinPWM );
 	void init();
 	virtual void run(unsigned long int /*now*/);
 

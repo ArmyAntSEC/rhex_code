@@ -17,7 +17,6 @@ TaskScheduler::TaskScheduler(Task **_tasks, unsigned int _numTasks) :
 {}
 
 void TaskScheduler::run() {
-	//Serial.println ( "Running task scheduler" );
 	unsigned long int now = millis();
 	Task **tpp = tasks;
 	for (int t = 0; t < numTasks; t++) {
@@ -27,9 +26,7 @@ void TaskScheduler::run() {
 			break;
 		}
 		tpp++;
-		//Serial.println ( "Done Checking task");
 	}
-	delay(100);
 }
 
 } /* namespace TaskScheduler */

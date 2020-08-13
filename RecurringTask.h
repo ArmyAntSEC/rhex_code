@@ -19,9 +19,12 @@ public:
     inline void setRate(unsigned long int _rate) { runTime += _rate; }
     virtual void run(unsigned long int now);
     void init( unsigned long int now );
+    inline void start() { this->isRunning = true; }
+    inline void stop() { this->isRunning = false; }
 private:
     unsigned long int runTime;
     unsigned int rate;
+    bool isRunning;
 };
 
 } /* namespace TaskScheduler */

@@ -14,6 +14,5 @@ SerialEchoBeacon::SerialEchoBeacon(unsigned long int _rate)
 
 void SerialEchoBeacon::run(unsigned long int now) {
 	RecurringTask::run(now);
-	Serial.println("Beacon ping...");
-
+	Serial.println("Beacon ping....");
 }
