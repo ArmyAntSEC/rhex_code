@@ -8,8 +8,6 @@
 #include "RecurringTask.h"
 #include <Arduino.h>
 
-namespace TaskScheduler {
-
 RecurringTask::RecurringTask(unsigned int _rate)
 : runTime(0), rate(_rate), isRunning(false)
 {
@@ -27,10 +25,7 @@ bool RecurringTask::canRun(unsigned long int now) {
 }
 
 //Increment our timer by one iteration
-void TaskScheduler::RecurringTask::run(unsigned long int /*now*/) {
+void RecurringTask::run(unsigned long int /*now*/) {
 	this->runTime += this->rate;
 }
-
-
-} /* namespace TaskScheduler */
 

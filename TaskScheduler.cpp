@@ -9,12 +9,20 @@
 
 #include "Arduino.h"
 
-namespace TaskScheduler {
+TaskScheduler::TaskScheduler() :
+  numTasks(0)
+{
+	memset( &tasks, 0, sizeof(Task)*10);
+}
 
-TaskScheduler::TaskScheduler(Task **_tasks, unsigned int _numTasks) :
-  tasks(_tasks),
-  numTasks(_numTasks)
-{}
+void TaskScheduler::schedule(Task* task) {
+	if ( numTasks < 10 ) {
+		tasks[numTasks] = task;
+		numTasks++;
+	} else {
+		Serial.println ( "TaskScheduler: More than 10 tasks cannot be allocated.");
+	}
+}
 
 void TaskScheduler::run() {
 	//Serial.println ( "Running task scheduler" );
@@ -32,4 +40,3 @@ void TaskScheduler::run() {
 	delay(100);
 }
 
-} /* namespace TaskScheduler */

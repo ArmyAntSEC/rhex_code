@@ -11,7 +11,7 @@
 #include <math.h>
 
 MotorScheduler::MotorScheduler( unsigned long int _rate, MotorController * const _controller ) :
-TaskScheduler::RecurringTask( _rate ), cycleTimeSeconds(2), slowTime(cycleTimeSeconds/2),
+RecurringTask( _rate ), cycleTimeSeconds(2), slowTime(cycleTimeSeconds/2),
 slowPhase(2*PI/3), angleOffset(0), controller(_controller)
 {
 	this->slowTimeDelta = 0;

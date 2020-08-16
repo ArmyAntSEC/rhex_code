@@ -10,17 +10,14 @@
 
 #include "Task.h"
 
-namespace TaskScheduler {
-
 class TaskScheduler {
 public:
-    TaskScheduler(Task **task, unsigned int numTasks);
+    TaskScheduler();
+    void schedule ( Task* task );
     void run();
 private:
-    Task **tasks;
+    Task *tasks[10];
     int numTasks;
 };
-
-} /* namespace TaskScheduler */
 
 #endif /* TASKSCHEDULER_H_ */

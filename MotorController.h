@@ -14,7 +14,7 @@
 #include "PID.h"
 #include "MotorDriver.h"
 
-class MotorController: public TaskScheduler::RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
+class MotorController: public RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
 public:
 	MotorController(unsigned int _rate, unsigned int encoderPin1, unsigned int encoderPin2, //
 			unsigned int driverPin1, unsigned int driverPin2, unsigned int driverpinPWM );

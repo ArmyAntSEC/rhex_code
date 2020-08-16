@@ -10,7 +10,7 @@
 
 #include "RecurringTask.h"
 
-class SerialEchoBeacon: public TaskScheduler::RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
+class SerialEchoBeacon: public RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
 
 public:
     // Create a new blinker for the specified pin and rate.

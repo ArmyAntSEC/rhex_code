@@ -10,8 +10,6 @@
 
 #include "Task.h"
 
-namespace TaskScheduler {
-
 class RecurringTask: public Task { // @suppress("Class has a virtual method and non-virtual destructor")
 public:
 	RecurringTask( unsigned int _rate );
@@ -26,7 +24,5 @@ private:
     unsigned int rate;
     bool isRunning;
 };
-
-} /* namespace TaskScheduler */
 
 #endif /* RECURRINGTASK_H_ */

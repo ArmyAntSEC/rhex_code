@@ -10,6 +10,7 @@
 #include "MotorController.h"
 #include "OptoBreaker.h"
 #include "MotorPositionInitiator.h"
+#include "MotorStateHandler.h"
 
 #define ENCODER_PIN_1 2
 #define ENCODER_PIN_2 3
@@ -28,9 +29,14 @@ MotorDriver driver(DRIVER_PIN_1, DRIVER_PIN_2, DRIVER_PIN_PWM );
 OptoBreaker breaker( BREAKER_PIN );
 MotorPositionInitiator initiator( 100, &driver, &breaker );
 
-const int NUM_TASKS = 2;
-TaskScheduler::Task *tasks[NUM_TASKS] = { &beacon, &initiator }; //, &controller, &scheduler };
-TaskScheduler::TaskScheduler sched(tasks, NUM_TASKS);
+//TODO: Have the state handler be the RecurringTask and let the initiator and other state just be implementation objects.
+MotorStateHandler stateHandler ( 100, &initiator );
+
+TaskScheduler sched = TaskScheduler();
+
+//TODO: Why does this not work?
+//sched.schedule( &beacon );
+//sched.schedule( &initiator );
 
 void setup() {
 	//Initilaize the communication.

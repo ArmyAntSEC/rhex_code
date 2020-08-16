@@ -12,7 +12,7 @@
 #include "MotorDriver.h"
 #include "OptoBreaker.h"
 
-class MotorPositionInitiator: public TaskScheduler::RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
+class MotorPositionInitiator: public RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
 public:
 	MotorPositionInitiator( unsigned int _rate, MotorDriver* _driver, OptoBreaker* _breaker );
 	virtual void run(unsigned long int now);

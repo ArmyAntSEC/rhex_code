@@ -11,7 +11,7 @@
 #include "RecurringTask.h"
 #include "MotorController.h"
 
-class MotorScheduler : public TaskScheduler::RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
+class MotorScheduler : public RecurringTask { // @suppress("Class has a virtual method and non-virtual destructor")
 private:
     const double cycleTimeSeconds;
     const double slowTime;
