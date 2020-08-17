@@ -22,29 +22,31 @@
 
 SerialEchoBeacon beacon(5000);
 
-//MotorController controller( 1, ENCODER_PIN_1, ENCODER_PIN_2, DRIVER_PIN_1, DRIVER_PIN_2 );
-//MotorScheduler scheduler( 100, &controller );
+OptoBreaker breaker( BREAKER_PIN );
+//Encoder encoder( ENCODER_PIN_1, ENCODER_PIN_2 );
+MotorStateHandler stateHandler ( 50 );
 
 MotorDriver driver(DRIVER_PIN_1, DRIVER_PIN_2, DRIVER_PIN_PWM );
-OptoBreaker breaker( BREAKER_PIN );
-MotorPositionInitiator initiator( 100, &driver, &breaker );
 
-//TODO: Have the state handler be the RecurringTask and let the initiator and other state just be implementation objects.
-MotorStateHandler stateHandler ( 100, &initiator );
+MotorPositionInitiator initiator(  &stateHandler, &driver, &breaker );
 
 TaskScheduler sched = TaskScheduler();
-
-//TODO: Why does this not work?
-//sched.schedule( &beacon );
-//sched.schedule( &initiator );
 
 void setup() {
 	//Initilaize the communication.
 	Serial.begin(9600);
 	Serial.println("\nHello World again!");
+
+	stateHandler.setInitiator(&initiator);
+	stateHandler.startInitiator();
+	stateHandler.init(millis());
+
+	//Add the objects to the scheduler
+	sched.add( &beacon );
+	sched.add( &stateHandler );
+
 	beacon.init(millis());
 	driver.init();
-	initiator.init(millis());
 }
 
 void loop() {

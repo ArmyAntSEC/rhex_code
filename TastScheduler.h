@@ -5,19 +5,20 @@
  *      Author: Daniel
  */
 
-#ifndef TASKSCHEDULER_H_
-#define TASKSCHEDULER_H_
+#ifndef TASTSCHEDULER_H_
+#define TASTSCHEDULER_H_
 
 #include "Task.h"
 
-class TaskScheduler {
+class TastScheduler {
 public:
-    TaskScheduler();
-    void add ( Task* task );
+    TastScheduler();
+    void schedule ( Task* task );
+    void add();
     void run();
 private:
     Task *tasks[10];
     int numTasks;
 };
 
-#endif /* TASKSCHEDULER_H_ */
+#endif /* TASTSCHEDULER_H_ */

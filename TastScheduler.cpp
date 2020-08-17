@@ -5,17 +5,17 @@
  *      Author: Daniel
  */
 
-#include "TaskScheduler.h"
+#include "TastScheduler.h"
 
 #include "Arduino.h"
 
-TaskScheduler::TaskScheduler() :
+TastScheduler::TastScheduler() :
   numTasks(0)
 {
 	memset( &tasks, 0, sizeof(Task)*10);
 }
 
-void TaskScheduler::add(Task* task) {
+void TastScheduler::schedule(Task* task) {
 	if ( numTasks < 10 ) {
 		tasks[numTasks] = task;
 		numTasks++;
@@ -24,7 +24,7 @@ void TaskScheduler::add(Task* task) {
 	}
 }
 
-void TaskScheduler::run() {
+void TastScheduler::run() {
 	//Serial.println ( "Running task scheduler" );
 	unsigned long int now = millis();
 	Task **tpp = tasks;
@@ -35,5 +35,10 @@ void TaskScheduler::run() {
 			break;
 		}
 		tpp++;
+		//Serial.println ( "Done Checking task");
 	}
+	delay(100);
+}
+
+void TastScheduler::add() {
 }
