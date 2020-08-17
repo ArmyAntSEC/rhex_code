@@ -11,6 +11,7 @@
 #include "OptoBreaker.h"
 #include "MotorPositionInitiator.h"
 #include "MotorStateHandler.h"
+#include "MotorSinWaver.h"
 
 #define ENCODER_PIN_1 2
 #define ENCODER_PIN_2 3
@@ -29,6 +30,7 @@ MotorStateHandler stateHandler ( 50 );
 MotorDriver driver(DRIVER_PIN_1, DRIVER_PIN_2, DRIVER_PIN_PWM );
 
 MotorPositionInitiator initiator(  &stateHandler, &driver, &breaker );
+MotorSinWaver waver(  &stateHandler, &driver, &breaker );
 
 TaskScheduler sched = TaskScheduler();
 
@@ -38,6 +40,7 @@ void setup() {
 	Serial.println("\nHello World again!");
 
 	stateHandler.setInitiator(&initiator);
+	stateHandler.setMainLoop(&waver);
 	stateHandler.startInitiator();
 	stateHandler.init(millis());
 
