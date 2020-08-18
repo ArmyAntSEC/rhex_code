@@ -6,12 +6,12 @@
 #include "PID.h"
 #include "SerialEchoBeacon.h"
 #include "TaskScheduler.h"
-#include "MotorScheduler.h"
-#include "MotorController.h"
 #include "OptoBreaker.h"
 #include "MotorPositionInitiator.h"
 #include "MotorStateHandler.h"
 #include "MotorSinWaver.h"
+#include "MotorPIDRegulator.h"
+#include "PID.h"
 
 #define ENCODER_PIN_1 2
 #define ENCODER_PIN_2 3
@@ -24,13 +24,22 @@
 SerialEchoBeacon beacon(5000);
 
 OptoBreaker breaker( BREAKER_PIN );
-//Encoder encoder( ENCODER_PIN_1, ENCODER_PIN_2 );
-MotorStateHandler stateHandler ( 50 );
+Encoder encoder( ENCODER_PIN_1, ENCODER_PIN_2 );
+double Kp = 100;
+double Ki = 0;
+double Kd = 10;
+int sampleTime = 50;
+
+PID pid(Kp, Ki, Kd, sampleTime, P_ON_E, DIRECT );
+
+MotorStateHandler stateHandler ( sampleTime );
+
 
 MotorDriver driver(DRIVER_PIN_1, DRIVER_PIN_2, DRIVER_PIN_PWM );
 
 MotorPositionInitiator initiator(  &stateHandler, &driver, &breaker );
-MotorSinWaver waver(  &stateHandler, &driver, &breaker );
+MotorSinWaver waver(  &stateHandler, &driver );
+MotorPIDRegulator regulator( &stateHandler, &driver, &encoder, &pid );
 
 TaskScheduler sched = TaskScheduler();
 
@@ -40,7 +49,7 @@ void setup() {
 	Serial.println("\nHello World again!");
 
 	stateHandler.setInitiator(&initiator);
-	stateHandler.setMainLoop(&waver);
+	stateHandler.setMainLoop(&regulator);
 	stateHandler.startInitiator();
 	stateHandler.init(millis());
 
@@ -55,3 +64,32 @@ void setup() {
 void loop() {
 	sched.run();
 }
+
+/*
+ * double MotorScheduler::interp1(int xlen, double x[], double y[], double xq) {
+	//Note: X must be strictly monotonically increasing.<
+
+	//Check that we are in range
+	if ( xq < x[0] || xq > x[xlen-1] ) {
+		return 1.0/0.0;
+	}
+
+	//Now find what segment we are in
+	int segment = 0;
+	while ( xq > x[segment+1] ) { segment++; }
+
+	//Compute the start ane endpoints of the current segment.
+	double x0 = x[segment];
+	double x1 = x[segment+1];
+	double y0 = y[segment];
+	double y1 = y[segment+1];
+
+	//Compute the relative position within the segment in x
+	double xt = (xq - x0)/(x1-x0);
+
+	//Compute the Y postion to return
+	double yRet = y0 + (y1-y0)*xt;
+
+	return yRet;
+}
+ */

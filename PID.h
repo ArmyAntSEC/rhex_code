@@ -17,15 +17,12 @@ class PID
   #define P_ON_E 1
 
   //commonly used functions **************************************************************************
-    PID(double, double, double, int, int, int);  // * constructor.  Initial tuning parameters are set here as well as sample time.
-                                          	//   (overload for specifying proportional mode)
-
-    PID(double, double, double, int, int); 		// * constructor.  Initial tuning parameters are set here as well as sample time.
+    PID(double Kp, double Ki, double Kd, int sampleTime, int POn, int ControllerDirection);  // * constructor.  Initial tuning parameters are set here as well as sample time.
 
     double Compute(double input, double setPoint); // Does a computation. Should be called at the interval
     											// defined when creating the object.
 
-    void SetOutputLimits(double, double); // * clamps the output to a specific range. 0-255 by default, but
+    void SetOutputLimits(double Min, double Max); // * clamps the output to a specific range. 0-255 by default, but
 										                      //   it's likely the user will want to change this depending on
 										                      //   the application
 	
@@ -74,6 +71,12 @@ class PID
 	unsigned long SampleTime;
 	double outMin, outMax;
 	bool pOnE;
+
+	inline double angleDifference( double angle1, double angle2 )
+	{
+	    double diff = fmod(( angle2 - angle1 + 180 ), 360) - 180;
+	    return diff < -180 ? diff + 360 : diff;
+	}
 };
 #endif
 

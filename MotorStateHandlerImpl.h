@@ -9,19 +9,17 @@
 #define MOTORSTATEHANDLERIMPL_H_
 
 #include "MotorDriver.h"
-#include "OptoBreaker.h"
 
 class MotorStateHandler;
 
 class MotorStateHandlerImpl { // @suppress("Class has a virtual method and non-virtual destructor")
 public:
-	MotorStateHandlerImpl( MotorStateHandler* _handler, MotorDriver* _driver, OptoBreaker* _breaker ):
-	handler(_handler), driver(_driver), breaker(_breaker) {}
+	MotorStateHandlerImpl( MotorStateHandler* _handler, MotorDriver* _driver ):
+	handler(_handler), driver(_driver) {}
 	virtual void run(unsigned long int now) = 0;
 protected:
 	MotorStateHandler* handler;
 	MotorDriver* driver;
-	OptoBreaker* breaker;
 };
 
 #include "MotorStateHandler.h"

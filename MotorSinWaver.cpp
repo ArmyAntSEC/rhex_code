@@ -8,9 +8,8 @@
 #include "MotorSinWaver.h"
 #include <Arduino.h>
 
-MotorSinWaver::MotorSinWaver(MotorStateHandler* _handler, MotorDriver* _driver,
-		OptoBreaker* _breaker):
-		MotorStateHandlerImpl( _handler, _driver, _breaker ), startTime(0)
+MotorSinWaver::MotorSinWaver(MotorStateHandler* _handler, MotorDriver* _driver ):
+		MotorStateHandlerImpl( _handler, _driver ), startTime(0)
  {
 }
 

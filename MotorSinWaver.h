@@ -12,7 +12,7 @@
 
 class MotorSinWaver: public MotorStateHandlerImpl { // @suppress("Class has a virtual method and non-virtual destructor")
 public:
-	MotorSinWaver(MotorStateHandler* _handler, MotorDriver* _driver, OptoBreaker* _breaker);
+	MotorSinWaver(MotorStateHandler* _handler, MotorDriver* _driver);
 	virtual void run(unsigned long int now);
 private:
 	unsigned long int startTime;

@@ -5,12 +5,8 @@
  * This Library is licensed under the MIT License
  **********************************************************************************************/
 
-#if ARDUINO >= 100
-  #include "Arduino.h"
-#else
-  #include "WProgram.h"
-#endif
 
+#include "Arduino.h"
 #include "PID.h"
 
 /*Constructor (...)*********************************************************
@@ -28,16 +24,6 @@ PID::PID( double Kp, double Ki, double Kd, int sampleTime, int POn, int Controll
     PID::SetTunings(Kp, Ki, Kd, POn);
 }
 
-/*Constructor (...)*********************************************************
- *    To allow backwards compatability for v1.1, or for people that just want
- *    to use Proportional on Error without explicitly saying so
- ***************************************************************************/
-
-PID::PID( double Kp, double Ki, double Kd, int sampleTime, int ControllerDirection)
-    :PID::PID( Kp, Ki, Kd, sampleTime, P_ON_E, ControllerDirection)
-{
-}
-
 
 /* Compute() **********************************************************************
  *     This, as they say, is where the magic happens.  this function should be called
@@ -48,7 +34,7 @@ PID::PID( double Kp, double Ki, double Kd, int sampleTime, int ControllerDirecti
 double PID::Compute(double input, double setPoint)
 {
 	/*Compute all the working error variables*/
-	double error = setPoint - input;
+	double error = this->angleDifference(setPoint, input);
 	double dInput = (input - lastInput);
 	outputSum+= (ki * error);
 

@@ -19,6 +19,7 @@ public:
 private:
 	enum State { NEW, MOVING, DONE };
 	State state;
+	OptoBreaker* breaker;
 };
 
 #endif /* MOTORPOSITIONINITIATOR_H_ */

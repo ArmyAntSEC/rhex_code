@@ -9,7 +9,7 @@
 #include <Arduino.h>
 
 MotorPositionInitiator::MotorPositionInitiator(MotorStateHandler* _handler, MotorDriver* _driver, OptoBreaker* _breaker ):
-	MotorStateHandlerImpl(_handler, _driver, _breaker ), state(NEW)
+	MotorStateHandlerImpl(_handler, _driver ), state(NEW), breaker(_breaker)
 {}
 
 void MotorPositionInitiator::run(unsigned long int) {
