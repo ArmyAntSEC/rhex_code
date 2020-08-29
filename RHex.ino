@@ -49,7 +49,7 @@ void setup() {
 	Serial.println("\nHello World again!");
 
 	stateHandler.setInitiator(&initiator);
-	stateHandler.setMainLoop(&regulator);
+	stateHandler.setMainLoop(&waver);
 	stateHandler.startInitiator();
 	stateHandler.init(millis());
 
@@ -63,6 +63,7 @@ void setup() {
 
 void loop() {
 	sched.run();
+
 }
 
 /*

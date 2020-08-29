@@ -25,6 +25,6 @@ void MotorSinWaver::run(unsigned long int now) {
 	double timeDiffPeriod = timeDiff % period;
 
 	//Compute the sine of the time diff.
-	int speed = (int)(128*sin(2*M_PI*timeDiffPeriod/1000));
+	int speed = (int)(255*sin(2*M_PI*timeDiffPeriod/1000));
 	driver->setMotorPWM(speed);
 }
