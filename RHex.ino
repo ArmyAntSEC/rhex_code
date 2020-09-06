@@ -25,12 +25,12 @@ SerialEchoBeacon beacon(5000);
 
 OptoBreaker breaker( BREAKER_PIN );
 Encoder encoder( ENCODER_PIN_1, ENCODER_PIN_2 );
-double Kp = 100;
+double Kp = 1000;
 double Ki = 0;
-double Kd = 10;
+double Kd = 0;
 int sampleTime = 50;
 
-PID pid(Kp, Ki, Kd, sampleTime, P_ON_E, DIRECT );
+PID pid(Kp, Ki, Kd, sampleTime, P_ON_E, REVERSE );
 
 MotorStateHandler stateHandler ( sampleTime );
 
@@ -49,7 +49,7 @@ void setup() {
 	Serial.println("\nHello World again!");
 
 	stateHandler.setInitiator(&initiator);
-	stateHandler.setMainLoop(&waver);
+	stateHandler.setMainLoop(&regulator);
 	stateHandler.startInitiator();
 	stateHandler.init(millis());
 
@@ -59,11 +59,26 @@ void setup() {
 
 	beacon.init(millis());
 	driver.init();
+	regulator.setWantedPositionRev(-10.4);
+
 }
 
+unsigned long int loops = 0;
+bool done = false;
 void loop() {
-	sched.run();
-
+	while ( done == false ) {
+		if ( loops++ < 2e5 )
+			sched.run();
+		else {
+			done = true;
+			Serial.print ( "Done with " );
+			Serial.print ( loops );
+			Serial.print ( " loops in " );
+			Serial.print ( millis() );
+			Serial.println ( " ms.");
+			driver.setMotorPWM(0);
+		}
+	}
 }
 
 /*

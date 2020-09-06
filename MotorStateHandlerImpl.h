@@ -17,6 +17,7 @@ public:
 	MotorStateHandlerImpl( MotorStateHandler* _handler, MotorDriver* _driver ):
 	handler(_handler), driver(_driver) {}
 	virtual void run(unsigned long int now) = 0;
+	virtual void init() = 0;
 protected:
 	MotorStateHandler* handler;
 	MotorDriver* driver;

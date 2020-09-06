@@ -16,6 +16,7 @@ class MotorPositionInitiator: public MotorStateHandlerImpl { // @suppress("Class
 public:
 	MotorPositionInitiator(  MotorStateHandler* _handler, MotorDriver* _driver, OptoBreaker* _breaker );
 	virtual void run(unsigned long int now);
+	virtual void init() {}
 private:
 	enum State { NEW, MOVING, DONE };
 	State state;

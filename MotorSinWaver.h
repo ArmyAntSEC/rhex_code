@@ -14,6 +14,7 @@ class MotorSinWaver: public MotorStateHandlerImpl { // @suppress("Class has a vi
 public:
 	MotorSinWaver(MotorStateHandler* _handler, MotorDriver* _driver);
 	virtual void run(unsigned long int now);
+	virtual void init() {}
 private:
 	unsigned long int startTime;
 };

@@ -14,9 +14,11 @@ MotorStateHandler::MotorStateHandler( unsigned long int rate ):
 }
 
 void MotorStateHandler::startInitiator() {
+	initiator->init();
 	currentState = initiator;
 }
 void MotorStateHandler::startMainLoop() {
+	mainLoop->init();
 	currentState = mainLoop;
 }
 

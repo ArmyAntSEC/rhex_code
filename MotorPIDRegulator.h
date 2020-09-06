@@ -16,12 +16,13 @@ class MotorPIDRegulator: public MotorStateHandlerImpl { // @suppress("Class has 
 public:
 	MotorPIDRegulator(MotorStateHandler* _handler, MotorDriver* _driver, Encoder* _encoder, PID* _pid );
 	virtual void run(unsigned long int now);
-	void setWantedPositionRevs( float _setPointRevs );
+	virtual void init();
+	void setWantedPositionRev( float _setPointRev );
 private:
 	double angleDifference( double angle1, double angle2 );
 	Encoder* encoder;
 	PID* pid;
-	double setPointRad;
+	double setPointRev;
 };
 
 #endif /* MOTORPIDREGULATOR_H_ */
